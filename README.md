@@ -19,10 +19,9 @@ You can copy and run the code bellow to try.
 ```python
 import carbone_sdk
 
-#  SDK constructor
-# The access token can be pass as argument to NewCarboneSDK
-# Or by the environment variable "CARBONE_TOKEN"
-# use the command "export CARBONE_TOKEN=secret-token"
+# SDK constructor
+# The access token can be passed as an argument to NewCarboneSDK
+# Or by the environment variable "CARBONE_TOKEN", use the command "export CARBONE_TOKEN=secret-token"
 csdk = carbone_sdk.CarboneSDK("secret-token")
 
 #  The template ID, it could be a file
