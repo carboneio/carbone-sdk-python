@@ -66,7 +66,22 @@ class TestRender:
     with pytest.raises(Exception):
       # should return the error "failled to generate the template id"
       csdk.render(fake_template_id, {"data": {"firstname": "john", "lastname": "wick"}})
-  # def render_a_report_from_an_existing_template_id(self, csdk, requests_mock):
+
+  def test_render_a_report_from_an_existing_template_id(self, csdk, requests_mock):
+    template_id = "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114"
+    # Request to post the render the report
+    render_id="MTAuMjAuMjEuMTAgICAg01E98H4R7PMC2H6XSE5Z6J8XYQ.odt"
+    requests_mock.post(csdk._api_url + "/render/" + template_id , json={'success': True, 'data': {'renderId': render_id, 'inputFileExtension': 'odt'}})
+    # Request to get the report
+    filename = os.path.join(os.path.dirname(__file__), 'template.test.html')
+    file_data = open(filename, "rb")
+    requests_mock.get(csdk._api_url + "/render/" + render_id , body=file_data)
+    # Call the function
+    resp = csdk.render(template_id, {"data": {"firstname": "john", "lastname": "wick"}})
+    file_data = open(filename, "rb")
+    assert file_data.read() == resp
+
+
   # Render a report from a fresh new template (path as argument) (create/delete template and create/delete report)
   # Render a report from an existing template and create the file (template has already been uploaded)
 
