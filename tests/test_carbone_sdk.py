@@ -44,6 +44,32 @@ class TestInitSDK:
     csdk.set_api_version(new_version)
     assert csdk._api_headers["carbone-version"] == new_version
 
+class TestRender:
+  def test_render_a_report_error_file_missing(self, csdk):
+    with pytest.raises(ValueError):
+      csdk.render()
+
+  def test_render_a_report_error_json_data_missing(self, csdk):
+    with pytest.raises(ValueError):
+      csdk.render()
+
+  def test_render_a_report_error_from_a_non_existing_template_id(self, csdk, requests_mock):
+    fake_template_id = "ThisTemplateIdDoesNotExist"
+    requests_mock.post(csdk._api_url + "/render/" + fake_template_id , json={'success': False, 'error': 'Error while rendering template Error: 404 Not Found'})
+    with pytest.raises(Exception):
+      # should return the error "Error while rendering template Error: 404 Not Found"
+      csdk.render(fake_template_id, {"data": {"firstname": "john", "lastname": "wick"}})
+
+  def test_render_a_report_error_from_a_directory(self, csdk, requests_mock):
+    fake_template_id = "./tests"
+    requests_mock.post(csdk._api_url + "/render/" + fake_template_id , json={'success': False, 'error': 'Error while rendering template Error: 404 Not Found'})
+    with pytest.raises(Exception):
+      # should return the error "failled to generate the template id"
+      csdk.render(fake_template_id, {"data": {"firstname": "john", "lastname": "wick"}})
+  # def render_a_report_from_an_existing_template_id(self, csdk, requests_mock):
+  # Render a report from a fresh new template (path as argument) (create/delete template and create/delete report)
+  # Render a report from an existing template and create the file (template has already been uploaded)
+
 class TestAddTemplate:
   def test_add_template(self, csdk, requests_mock):
     expected_result = {"success": True, "data": {"templateId": "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114"}}

@@ -21,7 +21,6 @@ class CarboneSDK:
   def add_template(self, template_file_name = None, payload = ""):
     if template_file_name is None:
       raise ValueError('CarboneSDK: add_template method: the argument template_file_name is missing')
-      return
     file_data = open(template_file_name, "rb")
     multipart_form_data = {
       "template": ("template.odt", file_data),
@@ -32,29 +31,24 @@ class CarboneSDK:
   def get_template(self, template_id = None):
     if template_id is None:
       raise ValueError('Carbone SDK get_template error: argument is missing: template_id')
-      return
     with requests.get(self._api_url + "/template/" + template_id,  stream=True, headers=self._api_headers, timeout=self._api_timeout) as r:
       return r.content
 
   def delete_template(self, template_id = None):
     if template_id is None:
       raise ValueError('Carbone SDK delete_template error: argument is missing: template_id')
-      return
     return requests.delete(self._api_url + "/template/" + template_id, headers=self._api_headers, timeout=self._api_timeout)
 
   def render_report(self, template_id = None, json_data = None):
     if template_id is None:
       raise ValueError('Carbone SDK render_report error: argument is missing: template_id')
-      return
     if json_data is None:
       raise ValueError('Carbone SDK render_report error: argument is missing: json_data')
-      return
     return requests.post(self._api_url + "/render/" + template_id, json=json_data, headers=self._api_headers, timeout=self._api_timeout)
 
   def get_report(self, render_id = None):
     if render_id is None:
       raise ValueError('Carbone SDK get_report error: argument is missing: render_id')
-      return
     with requests.get(self._api_url + "/render/" + render_id,  stream=True, headers=self._api_headers, timeout=self._api_timeout) as r:
       return r.content
 
@@ -88,7 +82,6 @@ class CarboneSDK:
       raise ValueError('Carbone SDK render error: argument is missing: file_or_template_id')
     if file_or_template_id is None:
       raise ValueError('Carbone SDK render error: argument is missing: json_data')
-      return
     resp = None
     # 1 - if file_or_template_id is a template_id => render from the template_id
     if os.path.exists(file_or_template_id) == False:
@@ -112,18 +105,19 @@ class CarboneSDK:
     if resp is None:
       raise Exception('Carbone SDK render error: something went wrong')
     if resp['success'] == False:
-      raise Exception(resp['error'])
-      return
+      # If the error from server is "Error while rendering template Error: 404 Not Found" it means TemplateID does not exist
+      raise Exception('Carbone SDK render error: ' + resp['error'])
+
     if len(resp['data']['renderId']) == 0:
       raise Exception('Carbone SDK render error: render_id empty')
     return self.get_report(resp['data']['renderId'])
 
 
-# _token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX"
+_token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX"
 _template_id = "cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7"
 
-# CSDK = CarboneSDK(_token)
-CSDK = CarboneSDK()
+CSDK = CarboneSDK(_token)
+# CSDK = CarboneSDK()
 
 json_data = {}
 json_data["data"] = {
@@ -131,12 +125,14 @@ json_data["data"] = {
   "lastname": "Wick"
 }
 json_data["convertTo"] = "html"
+resp = CSDK.render("foeijfoweijfoewijfoewijfwoij", json_data)
+print(resp)
 # resp = CSDK.render("cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7", json_data)
 # resp = CSDK.render("./tests/template.test2.html", json_data)
 # fd = open("report.html", "wb")
 # fd.write(resp)
 # fd.close()
-# print(resp)
+
 
 # ADD TEMPLATE
 # try:
