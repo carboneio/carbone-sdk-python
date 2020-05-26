@@ -65,7 +65,7 @@ class CarboneSDK:
   def set_api_version(self, api_version = None):
     if api_version is None:
       raise ValueError('Carbone SDK set_api_version error: argument is missing: api_version')
-    if isinstance(api_version, basestring):
+    if isinstance(api_version, str):
       self._api_headers["carbone-version"] = api_version
     elif isinstance(api_version, int):
       self._api_headers["carbone-version"] = str(api_version)
@@ -77,10 +77,6 @@ _token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyY
 _template_id = "3b912b4f9adffcd8e8abd88dfb4db5c49e89a8cc1e111f6aa661cb3ef1d9459f"
 
 CSDK = CarboneSDK(_token)
-
-print(CSDK._api_headers)
-print(CSDK._api_timeout)
-print(CSDK._api_url)
 
 # ADD TEMPLATE
 # try:
