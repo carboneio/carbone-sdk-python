@@ -70,3 +70,24 @@ class TestGetTemplate:
   def test_get_template_error_missing_template_id(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.add_template()
+
+class TestDeleteTemplate:
+  def test_delete_template(self, csdk, requests_mock):
+    tid = "foiejwoi21e093ru3209jf2093j"
+    expected_result = {"success": True, "error": None}
+    requests_mock.delete(csdk._api_url + "/template/" + tid , json=expected_result)
+    resp = csdk.delete_template(tid)
+    assert json.loads(resp.text) == expected_result
+
+  def test_delete_template_error_already_deleted(self, csdk, requests_mock):
+    tid = "foiejwoi21e093ru3209jf2093j"
+    expected_result = {"success": False, "error": "Error: Cannot remove template, does it exist ?"}
+    requests_mock.delete(csdk._api_url + "/template/" + tid , json=expected_result)
+    resp = csdk.delete_template(tid)
+    assert json.loads(resp.text) == expected_result
+
+  def test_delete_template_error_missing_template_id(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.delete_template()
+
+# {'success': False, 'error': 'Error: Cannot remove template, does it exist ?'}
