@@ -4,6 +4,7 @@ import requests_mock
 import requests
 import json
 import os
+import mimetypes
 
 @pytest.fixture
 def csdk():
@@ -38,23 +39,34 @@ class TestAddTemplate:
   def test_add_template_with_payload(self, csdk, requests_mock):
     expected_result = {"success": True, "data": {"templateId": "cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7"}}
     requests_mock.post(csdk._api_url + "/template", json=expected_result)
-    dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'template.test.odt')
+    filename = os.path.join(os.path.dirname(__file__), 'template.test.odt')
     print(filename)
     resp = csdk.add_template(filename, "salt1234")
     assert json.loads(resp.text) == expected_result
 
   def test_add_template_error_missing_args(self, csdk):
     with pytest.raises(ValueError) as e:
-      c = csdk.add_template()
+      csdk.add_template()
 
   def test_add_template_error_with_a_non_existing_file(self, csdk):
     with pytest.raises(FileNotFoundError) as e:
-      c = csdk.add_template("ShouldThrowAnError")
+      csdk.add_template("ShouldThrowAnError")
 
   def test_add_template_error_with_directory(self, csdk):
     with pytest.raises(FileNotFoundError) as e:
-      c = csdk.add_template("../tests")
+      csdk.add_template("../tests")
 
 
+class TestGetTemplate:
+  def test_get_template(self, csdk, requests_mock):
+    _template_id = "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114"
+    filename = os.path.join(os.path.dirname(__file__), 'template.test.odt')
+    file_data = open(filename, "rb")
+    requests_mock.get(csdk._api_url + "/template/" + _template_id, body=file_data)
+    resp = csdk.get_template(_template_id)
+    file_data = open(filename, "rb")
+    assert file_data.read() == resp
 
+  def test_get_template_error_missing_template_id(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.add_template()

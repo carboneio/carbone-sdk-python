@@ -80,20 +80,20 @@ _template_id = "3b912b4f9adffcd8e8abd88dfb4db5c49e89a8cc1e111f6aa661cb3ef1d9459f
 CSDK = CarboneSDK(_token)
 
 # ADD TEMPLATE
-try:
-  resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
-  print(json.loads(resp.text))
-except Exception as e:
-  print(e)
-
-# GET TEMPLATE
 # try:
-#   f = CSDK.get_template(_template_id)
-#   fd = open("tmp.odt", "wb")
-#   fd.write(f)
-#   fd.close()
+#   resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
+#   print(json.loads(resp.text))
 # except Exception as e:
 #   print(e)
+
+# GET TEMPLATE
+try:
+  f = CSDK.get_template(_template_id)
+  fd = open("tmp.odt", "wb")
+  fd.write(f)
+  fd.close()
+except Exception as e:
+  print(e)
 
 # DELETE TEMPLATE
 # try:
