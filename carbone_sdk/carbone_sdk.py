@@ -97,7 +97,6 @@ class CarboneSDK:
       # b - upload the template => get the template_id => render
       if resp['success'] == False and resp['error'] == "Error while rendering template Error: 404 Not Found":
         resp_add_template = self.add_template(file_or_template_id, payload).json()
-        print(resp_add_template['data']['templateId'])
         if resp_add_template['success'] == False:
           raise Exception("Carbone SDK render error:" + resp_add_template['error'])
         resp = self.render_report(resp_add_template['data']['templateId'], json_data).json()
