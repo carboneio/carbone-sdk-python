@@ -121,6 +121,7 @@ class TestRender:
     resp = csdk.render(file_path, {"data": {"name": "john"}})
     file_data = open(file_path, "rb")
     assert file_data.read() == resp
+    os.remove(file_path)
 
 
 class TestAddTemplate:
