@@ -4,18 +4,16 @@ import requests_mock
 import requests
 import json
 import os
-import mimetypes
 
 @pytest.fixture
 def csdk():
   return carbone_sdk.CarboneSDK("Token")
 
 class TestInitSDK:
-  def test_init_sdk_simple(self):
-    c = carbone_sdk.CarboneSDK("Token")
-    assert c._api_headers["Authorization"] == "Bearer Token"
-    assert c._api_headers["carbone-version"] == "2"
-    assert c._api_url == "https://render.carbone.io"
+  def test_sdk_default_values(self, csdk):
+    assert csdk._api_headers["Authorization"] == "Bearer Token"
+    assert csdk._api_headers["carbone-version"] == "2"
+    assert csdk._api_url == "https://render.carbone.io"
 
   def test_init_sdk_error_missing_token(self):
     with pytest.raises(Exception) as e:
@@ -26,6 +24,25 @@ class TestInitSDK:
     resp = requests.get(csdk._api_url + "/path")
     assert resp.text == "content"
     assert resp.status_code == 200
+
+  def test_set_access_token(self, csdk):
+    new_token = "ThisIsANewToken"
+    csdk.set_access_token(new_token)
+    assert csdk._api_headers["Authorization"] == "Bearer " + new_token
+
+  def test_set_access_token_error_missing_token(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.set_access_token()
+
+  def test_set_api_version_int(self, csdk):
+    new_version = 3
+    csdk.set_api_version(new_version)
+    assert csdk._api_headers["carbone-version"] == str(new_version)
+
+  def test_set_api_version_string(self, csdk):
+    new_version = "4"
+    csdk.set_api_version(new_version)
+    assert csdk._api_headers["carbone-version"] == new_version
 
 class TestAddTemplate:
   def test_add_template(self, csdk, requests_mock):
