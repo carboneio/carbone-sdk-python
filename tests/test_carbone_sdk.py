@@ -8,7 +8,7 @@ import mimetypes
 
 @pytest.fixture
 def csdk():
-    return carbone_sdk.CarboneSDK("eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX")
+  return carbone_sdk.CarboneSDK("Token")
 
 class TestInitSDK:
   def test_init_sdk_simple(self):
@@ -21,10 +21,11 @@ class TestInitSDK:
     with pytest.raises(Exception) as e:
       c = carbone_sdk.CarboneSDK()
 
-  def test_simple_http_request(self, csdk, requests_mock):
+  def test_simple_mock_http_request(self, csdk, requests_mock):
     requests_mock.get(csdk._api_url + "/path", text="content")
-    assert requests.get(csdk._api_url + "/path").text == "content"
-    assert requests.get(csdk._api_url + "/path").status_code == 200
+    resp = requests.get(csdk._api_url + "/path")
+    assert resp.text == "content"
+    assert resp.status_code == 200
 
 class TestAddTemplate:
   def test_add_template(self, csdk, requests_mock):
@@ -90,4 +91,66 @@ class TestDeleteTemplate:
     with pytest.raises(ValueError) as e:
       csdk.delete_template()
 
-# {'success': False, 'error': 'Error: Cannot remove template, does it exist ?'}
+class TestRenderReport:
+  def test_render_report(self, csdk, requests_mock):
+    template_id = "foiejwoi21e093ru3209jf2093j"
+    # mock
+    expected_result = {'success': True, 'data': {'renderId': 'MTAuMjAuMjEuMTAgICAg01E98H4R7PMC2H6XSE5Z6J8XYQ.odt', 'inputFileExtension': 'odt'}}
+    requests_mock.post(csdk._api_url + "/render/" + template_id , json=expected_result)
+    # request
+    template_data = {}
+    template_data["data"] = {
+      "firstname": "John",
+      "lastname": "Wick"
+    }
+    template_data["convertTo"] = "odt"
+    resp = csdk.render_report(template_id, template_data)
+    assert json.loads(resp.text) == expected_result
+
+  def test_render_report_error_missing_template_id(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.render_report()
+
+  def test_render_report_error_missing_json_data(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.render_report("template_id")
+
+class TestGetReport:
+  def test_get_report(self, csdk, requests_mock):
+    render_id = "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114.odt"
+    filename = os.path.join(os.path.dirname(__file__), 'template.test.html')
+    file_data = open(filename, "rb")
+    requests_mock.get(csdk._api_url + "/render/" + render_id, body=file_data)
+    resp = csdk.get_report(render_id)
+    file_data = open(filename, "rb")
+    assert file_data.read() == resp
+
+  def test_get_report_error_missing_render_id(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.get_report()
+
+class TestGenerateTemplateID:
+  def test_generate_template_id_odt_1(self, csdk):
+    filename_odt = os.path.join(os.path.dirname(__file__), 'template.test.odt')
+    res = csdk.generate_template_id(filename_odt)
+    assert res == "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114"
+
+  def test_generate_template_id_odt_2_payload_1(self, csdk):
+    filename_odt = os.path.join(os.path.dirname(__file__), 'template.test.odt')
+    res = csdk.generate_template_id(filename_odt, "ThisIsAPayload")
+    assert res == "7de8d1d8676abb32291ea5119cb1f78fe37fdfdc75332fcdae28f1e30d064ac0"
+
+  def test_generate_template_id_odt_3_payload_2(self, csdk):
+    filename_odt = os.path.join(os.path.dirname(__file__), 'template.test.odt')
+    res = csdk.generate_template_id(filename_odt, "8B5PmafbjdRqHuksjHNw83mvPiGj7WTE")
+    assert res == "a62eb407a5d5765ddf974636de8ab47bda7915cebd61197d7a2bb42ae70ffcd6"
+
+  def test_generate_template_id_html_1(self, csdk):
+    filename_html = os.path.join(os.path.dirname(__file__), 'template.test.html')
+    res = csdk.generate_template_id(filename_html)
+    assert res == "75256dd5c260cdf039ae807d3a007e78791e2d8963ea1aa6aff87ba03074df7f"
+
+  def test_generate_template_id_html_2_payload_1(self, csdk):
+    filename_html = os.path.join(os.path.dirname(__file__), 'template.test.html')
+    res = csdk.generate_template_id(filename_html, "This is a long payload with different characters 1 *5 &*9 %$ 3%&@9 @(( 3992288282 29299 9299929")
+    assert res == "70799b421cc9cf75d9112273a8e054c141d484eb8d5988bd006fac83e3990707"
