@@ -1,11 +1,14 @@
 import requests
 import json
 import hashlib
+import os
 
 class CarboneSDK:
   'Carbone SDK class used to call Carbone Render easily'
 
   def __init__(self, api_token = None):
+    if ('CARBONE_TOKEN' in os.environ):
+      api_token = os.environ.get('CARBONE_TOKEN')
     if api_token is None:
       raise ValueError('CarboneSDK: "API access token" is missing')
     self._api_url = "https://render.carbone.io"
@@ -14,6 +17,8 @@ class CarboneSDK:
       "Authorization": "Bearer " + api_token,
       "carbone-version": "2"
     }
+
+  # def render()
 
   def add_template(self, template_file_name = None, payload = ""):
     if template_file_name is None:
@@ -81,17 +86,18 @@ class CarboneSDK:
       raise ValueError('Carbone SDK set_api_version error: an argument is invalid: api_version is not a number nor a string')
 
 
-_token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX"
+# _token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX"
 _template_id = "cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7"
 
-CSDK = CarboneSDK(_token)
+# CSDK = CarboneSDK(_token)
+CSDK = CarboneSDK()
 
 # ADD TEMPLATE
-# try:
-#   resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
-#   print(json.loads(resp.text))
-# except Exception as e:
-#   print(e)
+try:
+  resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
+  print(json.loads(resp.text))
+except Exception as e:
+  print(e)
 
 # GET TEMPLATE
 # try:
