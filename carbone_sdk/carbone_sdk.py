@@ -93,8 +93,7 @@ class CarboneSDK:
         template_id = self.generate_template_id(file_or_template_id, payload)
       except Exception:
         raise Exception("Carbone SDK render error: failled to generate the template id")
-      resp = self.render_report(template_id, json_data)
-      resp = json.loads(resp.text)
+      resp = self.render_report(template_id, json_data).json()
       # b - upload the template => get the template_id => render
       if resp['success'] == False and resp['error'] == "Error while rendering template Error: 404 Not Found":
         resp_add_template = self.add_template(file_or_template_id, payload).json()
@@ -125,8 +124,8 @@ json_data["data"] = {
   "lastname": "Wick"
 }
 json_data["convertTo"] = "html"
-resp = CSDK.render("foeijfoweijfoewijfoewijfwoij", json_data)
-print(resp)
+# resp = CSDK.render("foeijfoweijfoewijfoewijfwoij", json_data)
+# print(resp)
 # resp = CSDK.render("cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7", json_data)
 # resp = CSDK.render("./tests/template.test2.html", json_data)
 # fd = open("report.html", "wb")

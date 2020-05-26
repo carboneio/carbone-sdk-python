@@ -73,7 +73,7 @@ class TestRender:
     render_id="MTAuMjAuMjEuMTAgICAg01E98H4R7PMC2H6XSE5Z6J8XYQ.odt"
     requests_mock.post(csdk._api_url + "/render/" + template_id , json={'success': True, 'data': {'renderId': render_id, 'inputFileExtension': 'odt'}})
     # Request to get the report
-    filename = os.path.join(os.path.dirname(__file__), 'template.test.html')
+    filename = os.path.join(os.path.dirname(__file__), 'template.test.odt')
     file_data = open(filename, "rb")
     requests_mock.get(csdk._api_url + "/render/" + render_id , body=file_data)
     # Call the function
@@ -81,9 +81,23 @@ class TestRender:
     file_data = open(filename, "rb")
     assert file_data.read() == resp
 
+  def test_render_from_a_template_already_uploaded(self, csdk, requests_mock):
+    file_name = "template.test.html"
+    file_path = os.path.join(os.path.dirname(__file__), file_name)
+    template_id="75256dd5c260cdf039ae807d3a007e78791e2d8963ea1aa6aff87ba03074df7f"
+    render_id="MTAuMjAuMjEuMTAgICAg01E98H4R7PMC2H6XSE5Z6J8XYQ.odt"
+    # mock render report
+    requests_mock.post(csdk._api_url + "/render/" + template_id , json={'success': True, 'data': {'renderId': render_id, 'inputFileExtension': 'html'}})
+    # mock request to get the report
+    file_data = open(file_path, "rb")
+    requests_mock.get(csdk._api_url + "/render/" + render_id , body=file_data)
+    # Call the function
+    resp = csdk.render(file_path, {"data": {"firstname": "john", "lastname": "wick"}})
+    file_data = open(file_path, "rb")
+    assert file_data.read() == resp
+
 
   # Render a report from a fresh new template (path as argument) (create/delete template and create/delete report)
-  # Render a report from an existing template and create the file (template has already been uploaded)
 
 class TestAddTemplate:
   def test_add_template(self, csdk, requests_mock):
