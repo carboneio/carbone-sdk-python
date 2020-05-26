@@ -57,6 +57,9 @@ fd.write(report_bytes)
 fd.close()
 # voila 🎉
 ```
+## Documentation
+
+- [API REFERENCE](./API-REFERENCE.md)
 
 ## Run tests
 
