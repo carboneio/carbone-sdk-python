@@ -18,6 +18,7 @@ class CarboneSDK:
   def add_template(self, template_file_name = None, payload = ""):
     if template_file_name is None:
       raise ValueError('CarboneSDK: add_template method: the argument template_file_name is missing')
+      return
     file_data = open(template_file_name, "rb")
     multipart_form_data = {
       "template": ("template.odt", file_data),
@@ -79,11 +80,11 @@ _template_id = "3b912b4f9adffcd8e8abd88dfb4db5c49e89a8cc1e111f6aa661cb3ef1d9459f
 CSDK = CarboneSDK(_token)
 
 # ADD TEMPLATE
-# try:
-#   resp = CSDK.add_template('../template.odt')
-#   print(json.loads(resp.text))
-# except Exception as e:
-#   print(e)
+try:
+  resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
+  print(json.loads(resp.text))
+except Exception as e:
+  print(e)
 
 # GET TEMPLATE
 # try:
