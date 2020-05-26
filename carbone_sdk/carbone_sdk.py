@@ -8,45 +8,45 @@ class CarboneSDK:
   def __init__(self, api_token = None):
     if api_token is None:
       raise ValueError('CarboneSDK: "API access token" is missing')
-    self.__api_url = "https://render.carbone.io"
-    self.__api_timeout = 10
-    self.__api_headers = {
+    self._api_url = "https://render.carbone.io"
+    self._api_timeout = 10
+    self._api_headers = {
       "Authorization": "Bearer " + api_token,
       "carbone-version": "2"
     }
 
   def add_template(self, template_file_name = None, payload = ""):
     if template_file_name is None:
-      raise ValueError('CarboneSDK: AddTemplate method: the argument template_file_name is missing')
+      raise ValueError('CarboneSDK: add_template method: the argument template_file_name is missing')
     file_data = open(template_file_name, "rb")
     multipart_form_data = {
       "template": ("template.odt", file_data),
       "payload": (None, payload)
     }
-    return requests.post(self.__api_url + '/template', files=multipart_form_data, headers=self.__api_headers, timeout=self.__api_timeout)
+    return requests.post(self._api_url + '/template', files=multipart_form_data, headers=self._api_headers, timeout=self._api_timeout)
 
   def get_template(self, template_id = None):
     if template_id is None:
       raise ValueError('Carbone SDK get_template error: argument is missing: template_id')
-    with requests.get(self.__api_url + "/template/" + template_id,  stream=True, headers=self.__api_headers, timeout=self.__api_timeout) as r:
+    with requests.get(self._api_url + "/template/" + template_id,  stream=True, headers=self._api_headers, timeout=self._api_timeout) as r:
       return r.content
 
   def delete_template(self, template_id = None):
     if template_id is None:
-      raise ValueError('Carbone SDK get_template error: argument is missing: template_id')
-    return requests.delete(self.__api_url + "/template/" + template_id, headers=self.__api_headers, timeout=self.__api_timeout)
+      raise ValueError('Carbone SDK delete_template error: argument is missing: template_id')
+    return requests.delete(self._api_url + "/template/" + template_id, headers=self._api_headers, timeout=self._api_timeout)
 
   def render_report(self, template_id = None, json_data = None):
     if template_id is None:
-      raise ValueError('Carbone SDK get_template error: argument is missing: template_id')
+      raise ValueError('Carbone SDK render_report error: argument is missing: template_id')
     if json_data is None:
-      raise ValueError('Carbone SDK get_template error: argument is missing: json_data')
-    return requests.post(self.__api_url + "/render/" + template_id, json=json_data, headers=self.__api_headers, timeout=self.__api_timeout)
+      raise ValueError('Carbone SDK render_report error: argument is missing: json_data')
+    return requests.post(self._api_url + "/render/" + template_id, json=json_data, headers=self._api_headers, timeout=self._api_timeout)
 
   def get_report(self, render_id = None):
     if render_id is None:
-      raise ValueError('Carbone SDK get_template error: argument is missing: render_id')
-    with requests.get(self.__api_url + "/render/" + render_id,  stream=True, headers=self.__api_headers, timeout=self.__api_timeout) as r:
+      raise ValueError('Carbone SDK get_report error: argument is missing: render_id')
+    with requests.get(self._api_url + "/render/" + render_id,  stream=True, headers=self._api_headers, timeout=self._api_timeout) as r:
       return r.content
 
   def generate_template_id(self, template_file_name = None, payload = ""):
@@ -57,11 +57,30 @@ class CarboneSDK:
       h.update(bytes)
       return h.hexdigest()
 
+  def set_access_token(self, api_token = None):
+    if api_token is None:
+      raise ValueError('Carbone SDK set_access_token error: argument is missing: api_token')
+    self._api_headers["Authorization"] = "Bearer " + api_token
+
+  def set_api_version(self, api_version = None):
+    if api_version is None:
+      raise ValueError('Carbone SDK set_api_version error: argument is missing: api_version')
+    if isinstance(api_version, basestring):
+      self._api_headers["carbone-version"] = api_version
+    elif isinstance(api_version, int):
+      self._api_headers["carbone-version"] = str(api_version)
+    else:
+      raise ValueError('Carbone SDK set_api_version error: an argument is invalid: api_version is not a number nor a string')
+
 
 _token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX"
 _template_id = "3b912b4f9adffcd8e8abd88dfb4db5c49e89a8cc1e111f6aa661cb3ef1d9459f"
 
 CSDK = CarboneSDK(_token)
+
+print(CSDK._api_headers)
+print(CSDK._api_timeout)
+print(CSDK._api_url)
 
 # ADD TEMPLATE
 # try:
