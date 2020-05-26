@@ -18,8 +18,6 @@ class CarboneSDK:
       "carbone-version": "2"
     }
 
-  # def render()
-
   def add_template(self, template_file_name = None, payload = ""):
     if template_file_name is None:
       raise ValueError('CarboneSDK: add_template method: the argument template_file_name is missing')
@@ -85,6 +83,31 @@ class CarboneSDK:
     else:
       raise ValueError('Carbone SDK set_api_version error: an argument is invalid: api_version is not a number nor a string')
 
+  def render(self, file_or_template_id = None, json_data = None, payload = ""):
+    if file_or_template_id is None:
+      raise ValueError('Carbone SDK render error: argument is missing: file_or_template_id')
+    if file_or_template_id is None:
+      raise ValueError('Carbone SDK render error: argument is missing: json_data')
+      return
+
+    resp = None
+    # 1 - if file_or_template_id is a template_id => return the result
+    if os.path.exists(file_or_template_id) == False:
+      resp = self.render_report(file_or_template_id, json_data)
+      resp = json.loads(resp.text)
+    # 2 - if file_or_template_id
+    #   a - generate the template_id and try to render => return the result
+    #   b - upload the template => get the template_id => render => return the result
+
+
+
+    if resp['success'] == False:
+      raise Exception(resp.error)
+      return
+    if len(resp['data']['renderId']) == 0:
+      raise Exception('Carbone SDK render error: render_id empty')
+    return self.get_report(resp['data']['renderId'])
+
 
 # _token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNjY3IiwiYXVkIjoiY2FyYm9uZSIsImV4cCI6MjIxNzY3NTMwNSwiZGF0YSI6eyJpZEFjY291bnQiOjE2Njd9fQ.ABf57FFgQVX2nwo9gbYIruE17GNtvWKrWsgL7MP_dvgNEYAW5Kr-i9gXVKEBtHNTRtgr_rLHgnkyn4H-JsE2CqI8AXi-T8WGMR5DWdLn352VuA1xge39g9glZpNLVLVGalAZTp-u2ziZTbqlodtfOGzzZSPQnXCmOApsrHWfRhnLyfJX"
 _template_id = "cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7"
@@ -92,12 +115,21 @@ _template_id = "cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7
 # CSDK = CarboneSDK(_token)
 CSDK = CarboneSDK()
 
+json_data = {}
+json_data["data"] = {
+  "firstname": "John",
+  "lastname": "Wick"
+}
+json_data["convertTo"] = "odt"
+resp = CSDK.render("cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7", json_data)
+print(resp)
+
 # ADD TEMPLATE
-try:
-  resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
-  print(json.loads(resp.text))
-except Exception as e:
-  print(e)
+# try:
+#   resp = CSDK.add_template('./tests/template.test.odt', 'salt1234')
+#   print(json.loads(resp.text))
+# except Exception as e:
+#   print(e)
 
 # GET TEMPLATE
 # try:
