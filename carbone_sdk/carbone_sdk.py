@@ -26,7 +26,7 @@ class CarboneSDK:
       "template": ("template.odt", file_data),
       "payload": (None, payload)
     }
-    return requests.post(self._api_url + '/template', files=multipart_form_data, headers=self._api_headers, timeout=self._api_timeout)
+    return requests.post(self._api_url + '/template', files=multipart_form_data, headers=self._api_headers, timeout=self._api_timeout).json()
 
   def get_template(self, template_id = None):
     if template_id is None:
@@ -37,14 +37,14 @@ class CarboneSDK:
   def delete_template(self, template_id = None):
     if template_id is None:
       raise ValueError('Carbone SDK delete_template error: argument is missing: template_id')
-    return requests.delete(self._api_url + "/template/" + template_id, headers=self._api_headers, timeout=self._api_timeout)
+    return requests.delete(self._api_url + "/template/" + template_id, headers=self._api_headers, timeout=self._api_timeout).json()
 
   def render_report(self, template_id = None, json_data = None):
     if template_id is None:
       raise ValueError('Carbone SDK render_report error: argument is missing: template_id')
     if json_data is None:
       raise ValueError('Carbone SDK render_report error: argument is missing: json_data')
-    return requests.post(self._api_url + "/render/" + template_id, json=json_data, headers=self._api_headers, timeout=self._api_timeout)
+    return requests.post(self._api_url + "/render/" + template_id, json=json_data, headers=self._api_headers, timeout=self._api_timeout).json()
 
   def get_report(self, render_id = None):
     if render_id is None:
@@ -85,7 +85,7 @@ class CarboneSDK:
     resp = None
     # 1 - if file_or_template_id is a template_id => render from the template_id
     if os.path.exists(file_or_template_id) == False:
-      resp = self.render_report(file_or_template_id, json_data).json()
+      resp = self.render_report(file_or_template_id, json_data)
     # 2 - if file_or_template_id
     else:
       # a - generate the template_id and try to render
@@ -93,13 +93,13 @@ class CarboneSDK:
         template_id = self.generate_template_id(file_or_template_id, payload)
       except Exception:
         raise Exception("Carbone SDK render error: failled to generate the template id")
-      resp = self.render_report(template_id, json_data).json()
+      resp = self.render_report(template_id, json_data)
       # b - upload the template => get the template_id => render
       if resp['success'] == False and resp['error'] == "Error while rendering template Error: 404 Not Found":
-        resp_add_template = self.add_template(file_or_template_id, payload).json()
+        resp_add_template = self.add_template(file_or_template_id, payload)
         if resp_add_template['success'] == False:
           raise Exception("Carbone SDK render error:" + resp_add_template['error'])
-        resp = self.render_report(resp_add_template['data']['templateId'], json_data).json()
+        resp = self.render_report(resp_add_template['data']['templateId'], json_data)
     if resp is None:
       raise Exception('Carbone SDK render error: something went wrong')
     if resp['success'] == False:

@@ -121,7 +121,10 @@ class TestRender:
     resp = csdk.render(file_path, {"data": {"name": "john"}})
     file_data = open(file_path, "rb")
     assert file_data.read() == resp
-    os.remove(file_path)
+    try:
+      os.remove(file_path)
+    except Exception:
+      print("Can't remove the tmp template.")
 
 
 class TestAddTemplate:
@@ -130,17 +133,15 @@ class TestAddTemplate:
     requests_mock.post(csdk._api_url + "/template", json=expected_result)
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, 'template.test.odt')
-    print(filename)
     resp = csdk.add_template(filename)
-    assert json.loads(resp.text) == expected_result
+    assert resp == expected_result
 
   def test_add_template_with_payload(self, csdk, requests_mock):
     expected_result = {"success": True, "data": {"templateId": "cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7"}}
     requests_mock.post(csdk._api_url + "/template", json=expected_result)
     filename = os.path.join(os.path.dirname(__file__), 'template.test.odt')
-    print(filename)
     resp = csdk.add_template(filename, "salt1234")
-    assert json.loads(resp.text) == expected_result
+    assert resp == expected_result
 
   def test_add_template_error_missing_args(self, csdk):
     with pytest.raises(ValueError) as e:
@@ -175,14 +176,14 @@ class TestDeleteTemplate:
     expected_result = {"success": True, "error": None}
     requests_mock.delete(csdk._api_url + "/template/" + tid , json=expected_result)
     resp = csdk.delete_template(tid)
-    assert json.loads(resp.text) == expected_result
+    assert resp == expected_result
 
   def test_delete_template_error_already_deleted(self, csdk, requests_mock):
     tid = "foiejwoi21e093ru3209jf2093j"
     expected_result = {"success": False, "error": "Error: Cannot remove template, does it exist ?"}
     requests_mock.delete(csdk._api_url + "/template/" + tid , json=expected_result)
     resp = csdk.delete_template(tid)
-    assert json.loads(resp.text) == expected_result
+    assert resp == expected_result
 
   def test_delete_template_error_missing_template_id(self, csdk):
     with pytest.raises(ValueError) as e:
@@ -202,7 +203,7 @@ class TestRenderReport:
     }
     template_data["convertTo"] = "odt"
     resp = csdk.render_report(template_id, template_data)
-    assert json.loads(resp.text) == expected_result
+    assert resp == expected_result
 
   def test_render_report_error_missing_template_id(self, csdk):
     with pytest.raises(ValueError) as e:
