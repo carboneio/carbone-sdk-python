@@ -4,6 +4,7 @@ import requests_mock
 import requests
 import json
 import os
+import time
 
 @pytest.fixture
 def csdk():
@@ -96,8 +97,31 @@ class TestRender:
     file_data = open(file_path, "rb")
     assert file_data.read() == resp
 
+  def test_render_a_report_from_a_new_template(self, csdk, requests_mock):
+    # Creating the temporary template
+    time_str = str(time.time())
+    content_template = "<!DOCTYPE html><html><body> {d.name} date:" + time_str + "</body></html>"
+    file_name = "template." + time_str + ".tmp.html"
+    file_path = os.path.join(os.path.dirname(__file__), file_name)
+    fd = open(file_path, "w")
+    fd.write(content_template)
+    fd.close()
+    template_id = csdk.generate_template_id(file_path)
+    # # register mock add template
+    requests_mock.post(csdk._api_url + "/template", json={"success": True, "data": {"templateId": template_id}})
+    # register mock render report
+    render_id = 'MTAuMjAuMjEuMTAgICAg01E98H4R7PMC2H6XSE5Z6J8XYQ.html'
+    render_resp_1 = {"success": False, "error": "Error while rendering template Error: 404 Not Found"}
+    render_resp_2 = {'success': True, 'data': {'renderId': render_id, 'inputFileExtension': 'html'}}
+    requests_mock.register_uri("POST", csdk._api_url + "/render/" + template_id, [{'json': render_resp_1, 'status_code': 300}, {'json': render_resp_2, 'status_code': 200}])
+    # register the mock request to get the report
+    file_data = open(file_path, "rb")
+    requests_mock.get(csdk._api_url + "/render/" + render_id , body=file_data)
+    # Call the function
+    resp = csdk.render(file_path, {"data": {"name": "john"}})
+    file_data = open(file_path, "rb")
+    assert file_data.read() == resp
 
-  # Render a report from a fresh new template (path as argument) (create/delete template and create/delete report)
 
 class TestAddTemplate:
   def test_add_template(self, csdk, requests_mock):
