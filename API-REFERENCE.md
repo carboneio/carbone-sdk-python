@@ -94,8 +94,6 @@ fd.write(report_bytes)
 fd.close()
 ```
 
-
-
 ### add_template
 ```python
 def add_template(self, template_file_name = None, payload = "")
@@ -132,6 +130,97 @@ try:
   fd = open("template.odt", "wb")
   fd.write(f)
   fd.close()
-except Exception as e:
+except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
+### delete_template
+```python
+def delete_template(self, template_id = None)
+```
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  resp = csdk.delete_template("template_id")
+  print(resp)
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
+### render_report
+```python
+def render_report(self, template_id = None, json_data = None)
+```
+Function to render the report from a template ID and a stringified JSON Object with [your data and options](https://carbone.io/api-reference.html#rendering-a-report). It returns the API response. The generated report and link are destroyed one hour after rendering.
+
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  template_id = "9910a..."
+  json_data = {
+    "data": {
+      "firstname": "John",
+      "lastname": "Wick",
+      "price": 1000
+    },
+    "convertTo": "odt"
+  }
+  resp = csdk.render_report(template_id, json_data)
+  print("Render ID: " + resp['data']['renderId'])
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
+### get_report
+```python
+def get_report(self, render_id = None)
+```
+Return the Report from a renderID.
+
+**Example**
+
+```python
+
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+# replace with your render ID
+render_id = "MTAuMjAuMTEuMTEgICAg01E9ANTANYSD20YN1HY4SHC9R5.odt"
+
+try:
+  f = csdk.get_report(render_id)
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+
+# Create the report
+fd = open(render_id, "wb")
+fd.write(f)
+fd.close()
+```
+### generate_template_id
+```python
+def generate_template_id(self, template_file_name = None, payload = "")
+```
+The Template ID is predictable and idempotent, pass the template path and it will return the `template_id`.
+You can get a different template ID thanks to the optional `payload`.
+
+
+### set_access_token
+```python
+def set_access_token(self, api_token = None)
+```
+It sets the Carbone access token.
+
+### set_api_version
+```python
+def set_api_version(self, api_version = None)
+```
+It sets the the Carbone version requested. By default, it is calling the version `2` of Carbone.
+
+*Note:* You can only set a major version of carbone.
