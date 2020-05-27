@@ -69,7 +69,7 @@ When a **template ID** is passed as an argument, the function renders with `rend
 ```python
 import carbone_sdk
 
-csdk = carbone_sdk.CarboneSDK(_token)
+csdk = carbone_sdk.CarboneSDK("your_access_token")
 
 template_path = "./templates/invoice.docx"
 json_data = {
@@ -92,4 +92,46 @@ except Exception as err:
 fd = open("invoice.pdf", "wb")
 fd.write(report_bytes)
 fd.close()
+```
+
+
+
+### add_template
+```python
+def add_template(self, template_file_name = None, payload = "")
+```
+Add the template to the API and returns the response (that contains a `template_id`).
+You can add multiple times the same template and get different templateId thanks to the optional `payload`.
+
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  resp = csdk.add_template('./tests/template.test.odt', 'salt1234')
+  print("Template ID: " + resp['data']['templateId'])
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
+### get_template
+```python
+def get_template(self, template_id = None)
+```
+
+Pass a `templateID` to the function and it returns the template as `bytes`. The templateID must exist otherwise an error is returned by the server.
+
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  f = csdk.get_template("cb03f7676ef0fbe5d7824a64676166ac2c7c789d9e6da5b7c0c46794911ee7a7")
+  fd = open("template.odt", "wb")
+  fd.write(f)
+  fd.close()
+except Exception as e:
+  print("Something went wrong: {0}".format(err))
 ```
