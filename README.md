@@ -23,7 +23,7 @@ import carbone_sdk
 # Or by the environment variable "CARBONE_TOKEN", use the command "export CARBONE_TOKEN=secret-token"
 csdk = carbone_sdk.CarboneSDK("secret-token")
 
-#  The template ID, it could be an ODT, DOCX, PPTX, XLSX, ODS file, etc...
+# The template ID, it could be an ODT, DOCX, PPTX, XLSX, ODS file, etc...
 template_id = "template"
 json_data = {
   "data": {
