@@ -57,13 +57,13 @@ $ printenv | grep "CARBONE_TOKEN"
 ```python
 def render(self, file_or_template_id = None, json_data = None, payload = "")
 ```
-The render function takes `file_or_template_id` the path of your local file OR a templateID, `json_data` a stringified JSON, and an optional `payload`.
+The render function takes `file_or_template_id` the path of your local file OR a template ID, `json_data` a stringified JSON, and an optional `payload`.
 
 It returns the report as a `bytes`. Carbone engine deleted files that have not been used for a while. By using this method, if your file has been deleted, the SDK will automatically upload it again and return you the result.
 
 When a **template file path** is passed as an argument, the function verifies if the template has been uploaded to render the report. If not, it calls `add_template` to upload the template to the server and generate a new template ID. Then it calls `render_report` and `get_report` to generate the report. If the path does not exist, an error is returned.
 
-When a **template ID** is passed as an argument, the function renders with `render_report` then call `get_report` to return the report. If the templateID does not exist, an error is returned.
+When a **template ID** is passed as an argument, the function renders with `render_report` then call `get_report` to return the report. If the template ID does not exist, an error is returned.
 
 **Example**
 ```python
@@ -118,7 +118,7 @@ except Exception as err:
 def get_template(self, template_id = None)
 ```
 
-Pass a `templateID` to the function and it returns the template as `bytes`. The templateID must exist otherwise an error is returned by the server.
+Pass a `template ID` to the function and it returns the template as `bytes`. The template ID must exist otherwise an error is returned by the server.
 
 ```python
 import carbone_sdk
