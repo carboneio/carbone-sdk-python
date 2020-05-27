@@ -1,7 +1,6 @@
 # Carbone Render Python SDK
-![Pypi Package](https://img.shields.io/badge/pypi-1.0.0-brightgreen.svg?cacheSeconds=2592000&logo=python&style=flat-square)
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000&style=flat-square)
-[![Documentation](https://img.shields.io/badge/documentation-yes-9cf.svg?style=flat-square)](https://carbone.io/api-reference.html#carbone-sdk-python)
+[![Pypi Package](https://img.shields.io/badge/pypi-1.0.0-brightgreen.svg?cacheSeconds=2592000&logo=python&style=flat-square)](https://pypi.org/project/carbone-sdk)
+[![Documentation](https://img.shields.io/badge/documentation-yes-blue.svg?style=flat-square)](https://carbone.io/api-reference.html#carbone-sdk-python)
 
 > Python SDK to use Carbone Render easily.
 
@@ -61,8 +60,21 @@ fd.close()
 
 - [API REFERENCE](./API-REFERENCE.md)
 
-## Run tests
+## Run test with Makefile
+Install the test packages:
+```shell
+$ make install
+```
+To run all the tests:
+```shell
+$ make test
+```
+To uninstall the test packages:
+```shell
+$ make uninstall
+```
 
+## Run tests manually
 Install:
 ```
 $ pip install pytest

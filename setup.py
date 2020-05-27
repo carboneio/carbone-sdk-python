@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="carbone-sdk-python-steeve", # the username is added for Test PyPI, it has to be deleted for PyPI
-    version="0.0.1",
+    name="carbone-sdk",
+    version="1.0.0",
     author="Steeve Payraudeau",
     author_email="support@carbone.io",
     description="Python SDK to use Carbone Render easily",
