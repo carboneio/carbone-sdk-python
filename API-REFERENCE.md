@@ -61,9 +61,9 @@ The render function takes `file_or_template_id` the path of your local file OR a
 
 It returns the report as a `bytes`. Carbone engine deletes files that have not been used for a while. By using this method, if your file has been deleted, the SDK will automatically upload it again and return you the result.
 
-When a **template file path** is passed as an argument, the function verifies if the template has been uploaded to render the report. If not, it calls `add_template` to upload the template to the server and generate a new template ID. Then it calls `render_report` and `get_report` to generate the report. If the path does not exist, an error is returned.
+When a **template file path** is passed as an argument, the function verifies if the template has been uploaded to render the report. If not, it calls [add_template](#add_template) to upload the template to the server and generate a new template ID. Then it calls [render_report](#render_report) and [get_report](#get_report) to generate the report. If the path does not exist, an error is returned.
 
-When a **template ID** is passed as an argument, the function renders with `render_report` then call `get_report` to return the report. If the template ID does not exist, an error is returned.
+When a **template ID** is passed as an argument, the function renders with [render_report](#render_report) then call [get_report](#get_report) to return the report. If the template ID does not exist, an error is returned.
 
 **Example**
 ```python
