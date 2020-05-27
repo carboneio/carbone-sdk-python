@@ -60,7 +60,9 @@ fd.close()
 
 - [API REFERENCE](./API-REFERENCE.md)
 
-## Run test with Makefile
+## Tests
+
+### Tests - Run with Makefile
 Install the test packages:
 ```shell
 $ make install
@@ -74,7 +76,7 @@ To uninstall the test packages:
 $ make uninstall
 ```
 
-## Run tests manually
+### Tests - Run manually
 Install:
 ```
 $ pip install pytest
