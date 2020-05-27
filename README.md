@@ -67,7 +67,7 @@ Install the test packages:
 ```shell
 $ make install
 ```
-To run all the tests:
+To run the tests:
 ```shell
 $ make test
 ```
