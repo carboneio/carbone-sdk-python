@@ -99,7 +99,7 @@ fd.close()
 def add_template(self, template_file_name = None, payload = "")
 ```
 Add the template to the API and returns the response (that contains a `template_id`).
-You can add multiple times the same template and get different templateId thanks to the optional `payload`.
+You can add multiple times the same template and get different template ID thanks to the optional `payload`.
 
 **Example**
 ```python
