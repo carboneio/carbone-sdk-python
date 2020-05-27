@@ -19,7 +19,7 @@ You can copy and run the code bellow to try.
 import carbone_sdk
 
 # SDK constructor
-# The access token can be passed as an argument to NewCarboneSDK
+# The access token can be passed as an argument to the constructor CarboneSDK
 # Or by the environment variable "CARBONE_TOKEN", use the command "export CARBONE_TOKEN=secret-token"
 csdk = carbone_sdk.CarboneSDK("secret-token")
 
