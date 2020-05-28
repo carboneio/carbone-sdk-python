@@ -1,6 +1,6 @@
-# Python Carbone SDK
+# Carbone Render Python SDK
 
-The Python Carbone SDK provide an simple interface to communicate with Carbone Render easily.
+The Carbone Python SDK provides a simple interface to communicate with Carbone Render easily.
 
 ## Install the Python SDK
 
