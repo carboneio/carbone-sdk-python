@@ -149,60 +149,6 @@ try:
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
-### render_report
-```python
-def render_report(self, template_id = None, json_data = None)
-```
-Function to render the report from a template ID and a stringified JSON Object with [your data and options](https://carbone.io/api-reference.html#rendering-a-report). It returns the API response. The generated report and link are destroyed one hour after rendering.
-
-**Example**
-```python
-import carbone_sdk
-
-csdk = carbone_sdk.CarboneSDK("your_access_token")
-
-try:
-  template_id = "9910a..."
-  json_data = {
-    "data": {
-      "firstname": "John",
-      "lastname": "Wick",
-      "price": 1000
-    },
-    "convertTo": "odt"
-  }
-  resp = csdk.render_report(template_id, json_data)
-  print("Render ID: " + resp['data']['renderId'])
-except Exception as err:
-  print("Something went wrong: {0}".format(err))
-```
-### get_report
-```python
-def get_report(self, render_id = None)
-```
-Return the Report from a renderID.
-
-**Example**
-
-```python
-
-import carbone_sdk
-
-csdk = carbone_sdk.CarboneSDK("your_access_token")
-
-# replace with your render ID
-render_id = "MTAuMjAuMTEuMTEgICAg01E9ANTANYSD20YN1HY4SHC9R5.odt"
-
-try:
-  f = csdk.get_report(render_id)
-except Exception as err:
-  print("Something went wrong: {0}".format(err))
-
-# Create the report
-fd = open(render_id, "wb")
-fd.write(f)
-fd.close()
-```
 ### generate_template_id
 ```python
 def generate_template_id(self, template_file_name = None, payload = "")
