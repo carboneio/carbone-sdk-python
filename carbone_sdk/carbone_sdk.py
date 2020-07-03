@@ -94,8 +94,8 @@ class CarboneSDK:
       except Exception:
         raise Exception("Carbone SDK render error: failled to generate the template id")
       resp = self.render_report(template_id, json_data)
-      # b - upload the template => get the template_id => render
-      if resp['success'] == False and resp['error'] == "Error while rendering template Error: 404 Not Found":
+      # b - if the render fail => upload the template => get the template_id => render
+      if resp['success'] == False:
         resp_add_template = self.add_template(file_or_template_id, payload)
         if resp_add_template['success'] == False:
           raise Exception("Carbone SDK render error:" + resp_add_template['error'])
@@ -103,7 +103,9 @@ class CarboneSDK:
     if resp is None:
       raise Exception('Carbone SDK render error: something went wrong')
     if resp['success'] == False:
-      # If the error from server is "Error while rendering template Error: 404 Not Found" it means TemplateID does not exist
+      # if RenderReport return one of the following error, it means the template does not exist otherwhise something went wrong.
+			# - Error while rendering template Error: ENOENT:File not found
+			# - Error while rendering template Error: 404 Not Found
       raise Exception('Carbone SDK render error: ' + resp['error'])
 
     if len(resp['data']['renderId']) == 0:
