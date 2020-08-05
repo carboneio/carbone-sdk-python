@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="carbone-sdk",
-    version="1.0.0",
+    version="1.0.1",
     author="Ideolys",
     author_email="support@carbone.io",
     description="Python SDK to use Carbone Render easily",

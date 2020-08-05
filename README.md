@@ -1,5 +1,5 @@
 # Carbone Render Python SDK
-[![Pypi Package](https://img.shields.io/badge/pypi-1.0.0-brightgreen.svg?cacheSeconds=2592000&logo=python&style=flat-square)](https://pypi.org/project/carbone-sdk)
+[![Pypi Package](https://img.shields.io/badge/pypi-1.0.1-brightgreen.svg?cacheSeconds=2592000&logo=python&style=flat-square)](https://pypi.org/project/carbone-sdk)
 [![Documentation](https://img.shields.io/badge/documentation-yes-blue.svg?style=flat-square)](https://carbone.io/api-reference.html#carbone-sdk-python)
 
 > Python SDK to use Carbone Render easily.
@@ -52,9 +52,9 @@ json_data = {
   "convertTo":"pdf"
 }
 
-# Render and return the report as bytes
-report_bytes = csdk.render(template_id, json_data)
-fd = open("Invoice.pdf", "wb")
+# Render and return the report as bytes and a unique report name
+report_bytes, unique_report_name = csdk.render(template_id, json_data)
+fd = open(unique_report_name, "wb")
 fd.write(report_bytes)
 fd.close()
 # voila 🎉

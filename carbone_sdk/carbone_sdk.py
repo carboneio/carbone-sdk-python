@@ -50,11 +50,11 @@ class CarboneSDK:
     if render_id is None:
       raise ValueError('Carbone SDK get_report error: argument is missing: render_id')
     with requests.get(self._api_url + "/render/" + render_id,  stream=True, headers=self._api_headers, timeout=self._api_timeout) as r:
-      return r.content
+      return r.content, self.get_report_name_from_header(r.headers)
 
   def generate_template_id(self, template_file_name = None, payload = ""):
     if template_file_name is None:
-      raise ValueError('Carbone SDK render_report error: argument is missing: template_file_name')
+      raise ValueError('Carbone SDK generate_template_id error: argument is missing: template_file_name')
     with open(template_file_name,"rb") as f:
       bytes = f.read() # read entire file as bytes
       h = hashlib.sha256()
@@ -111,3 +111,15 @@ class CarboneSDK:
     if len(resp['data']['renderId']) == 0:
       raise Exception('Carbone SDK render error: render_id empty')
     return self.get_report(resp['data']['renderId'])
+
+  def get_report_name_from_header(self, headers):
+    content_disposition = headers.get('content-disposition')
+    if (content_disposition is None):
+      return None
+    split_content_disposition = content_disposition.split("=")
+    if (len(split_content_disposition) != 2):
+     return None
+    report_name = split_content_disposition[1]
+    if (report_name[0] == '"' and report_name[len(report_name) -1] == '"'):
+      report_name = report_name[1:len(report_name)-1]
+    return report_name

@@ -23,11 +23,11 @@ json_data = {
   "data": {}
 }
 
-# Render and return the report as bytes
-report_bytes = csdk.render(template_id, json_data)
+# Render and return the report as bytes and a unique report name (for example "01EEYYHV0ENQE07JCKW8BD2QRP.odt")
+report_bytes, unique_report_name = csdk.render(template_id, json_data)
 
 # Create the file
-fd = open("Report.odt", "wb")
+fd = open(unique_report_name, "wb")
 fd.write(report_bytes)
 fd.close()
 ```
@@ -59,7 +59,7 @@ def render(self, file_or_template_id = None, json_data = None, payload = "")
 ```
 The render function takes `file_or_template_id` the path of your local file OR a template ID, `json_data` a stringified JSON, and an optional `payload`.
 
-It returns the report as a `bytes`. Carbone engine deletes files that have not been used for a while. By using this method, if your file has been deleted, the SDK will automatically upload it again and return you the result.
+It returns the report as a `bytes` and a unique report name as a `string`. Carbone engine deletes files that have not been used for a while. By using this method, if your file has been deleted, the SDK will automatically upload it again and return you the result.
 
 When a **template file path** is passed as an argument, the function verifies if the template has been uploaded to render the report. If not, it calls [add_template](#add_template) to upload the template to the server and generate a new template ID. Then it calls [render_report](#render_report) and [get_report](#get_report) to generate the report. If the path does not exist, an error is returned.
 
@@ -82,14 +82,14 @@ json_data = {
   "convertTo": "pdf"
 }
 
-# Render and return the report as bytes
+# Render and return the report as bytes and a unique report name
 try:
-  report_bytes = csdk.render(template_path, json_data)
+  report_bytes, unique_report_name = csdk.render(template_path, json_data)
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 
-# Create the file
-fd = open("invoice.pdf", "wb")
+# Create the invoice report
+fd = open(unique_report_name, "wb")
 fd.write(report_bytes)
 fd.close()
 ```
