@@ -6,17 +6,18 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="carbone-sdk",
     version="1.0.1",
-    author="Ideolys",
+    author="CarboneIO",
     author_email="support@carbone.io",
-    description="Python SDK to use Carbone Render easily",
+    description="Carbone Render Python SDK to generate reports easily (PDF, docx, xlsx, ods, odt, ...) from a JSON",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Ideolys/carbone-sdk-python",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    license='Apache-2.0'
 )
