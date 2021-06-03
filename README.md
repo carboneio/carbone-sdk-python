@@ -118,7 +118,7 @@ $ node ./tests/main.js
 
 Contributions, issues and feature requests are welcome!
 
-Feel free to check [issues page](https://github.com/Ideolys/carbone-sdk-python/issues).
+Feel free to check [issues page](https://github.com/carboneio/carbone-sdk-python/issues).
 
 ## Show your support
 
