@@ -1,6 +1,6 @@
 # Carbone Render Python SDK
 [![Pypi Package](https://img.shields.io/badge/pypi-1.0.1-brightgreen.svg?cacheSeconds=2592000&logo=python&style=flat-square)](https://pypi.org/project/carbone-sdk)
-[![Documentation](https://img.shields.io/badge/documentation-yes-blue.svg?style=flat-square)](https://carbone.io/api-reference.html#carbone-render-python-sdk)
+[![Documentation](https://img.shields.io/badge/documentation-yes-blue.svg?style=flat-square)](./API-REFERENCE.md)
 
 > Python SDK to use Carbone Render easily.
 

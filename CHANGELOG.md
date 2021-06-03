@@ -1,3 +1,7 @@
+
+### v1.0.2
+  - Add license and update setup
+
 ### v1.0.1
   - **Breaking changes**: the `render` method returns a tuple of 2 elements: the generated report as bytes and a unique report name.
     for example before:

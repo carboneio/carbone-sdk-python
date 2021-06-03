@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="carbone-sdk",
-    version="1.0.1",
+    version="1.0.2",
     author="CarboneIO",
     author_email="support@carbone.io",
     description="Carbone Render Python SDK to generate reports easily (PDF, docx, xlsx, ods, odt, ...) from a JSON",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Ideolys/carbone-sdk-python",
+    url="https://github.com/carboneio/carbone-sdk-python",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
