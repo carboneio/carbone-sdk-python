@@ -1,3 +1,5 @@
+### v1.0.3
+  - Fix #2 - render function: check if the json argument is empty
 
 ### v1.0.2
   - Add license and update setup
