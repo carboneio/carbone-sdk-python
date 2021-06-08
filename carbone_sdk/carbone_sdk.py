@@ -80,7 +80,7 @@ class CarboneSDK:
   def render(self, file_or_template_id = None, json_data = None, payload = ""):
     if file_or_template_id is None:
       raise ValueError('Carbone SDK render error: argument is missing: file_or_template_id')
-    if file_or_template_id is None:
+    if json_data is None:
       raise ValueError('Carbone SDK render error: argument is missing: json_data')
     resp = None
     # 1 - if file_or_template_id is a template_id => render from the template_id

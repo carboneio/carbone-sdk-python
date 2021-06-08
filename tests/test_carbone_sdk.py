@@ -21,6 +21,7 @@ class TestInitSDK:
   def test_init_sdk_error_missing_token(self):
     with pytest.raises(Exception) as e:
       c = carbone_sdk.CarboneSDK()
+    assert e.value.args[0] == 'CarboneSDK: "API access token" is missing'
 
   def test_simple_mock_http_request(self, csdk, requests_mock):
     requests_mock.get(csdk._api_url + "/path", text="content")
@@ -36,6 +37,7 @@ class TestInitSDK:
   def test_set_access_token_error_missing_token(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.set_access_token()
+    assert e.value.args[0] == 'Carbone SDK set_access_token error: argument is missing: api_token'
 
   def test_set_api_version_int(self, csdk):
     new_version = 3
@@ -47,28 +49,35 @@ class TestInitSDK:
     csdk.set_api_version(new_version)
     assert csdk._api_headers["carbone-version"] == new_version
 
+  def test_set_api_version_error_missing_version(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.set_api_version()
+    assert e.value.args[0] == 'Carbone SDK set_api_version error: argument is missing: api_version'
+
 class TestRender:
   def test_render_a_report_error_file_missing(self, csdk):
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError) as e:
       csdk.render()
+    assert e.value.args[0] == 'Carbone SDK render error: argument is missing: file_or_template_id'
 
   def test_render_a_report_error_json_data_missing(self, csdk):
-    with pytest.raises(ValueError):
-      csdk.render()
+    with pytest.raises(ValueError) as e:
+      csdk.render("template_id")
+    assert e.value.args[0] == 'Carbone SDK render error: argument is missing: json_data'
 
   def test_render_a_report_error_from_a_non_existing_template_id(self, csdk, requests_mock):
     fake_template_id = "ThisTemplateIdDoesNotExist"
     requests_mock.post(csdk._api_url + "/render/" + fake_template_id , json={'success': False, 'error': 'Error while rendering template Error: 404 Not Found'})
-    with pytest.raises(Exception):
-      # should return the error "Error while rendering template Error: 404 Not Found"
+    with pytest.raises(Exception) as e:
       csdk.render(fake_template_id, {"data": {"firstname": "john", "lastname": "wick"}})
+    assert e.value.args[0] == 'Carbone SDK render error: Error while rendering template Error: 404 Not Found'
 
   def test_render_a_report_error_from_a_directory(self, csdk, requests_mock):
     fake_template_id = "./tests"
     requests_mock.post(csdk._api_url + "/render/" + fake_template_id , json={'success': False, 'error': 'Error while rendering template Error: 404 Not Found'})
-    with pytest.raises(Exception):
-      # should return the error "failled to generate the template id"
+    with pytest.raises(Exception) as e:
       csdk.render(fake_template_id, {"data": {"firstname": "john", "lastname": "wick"}})
+    assert e.value.args[0] == 'Carbone SDK render error: failled to generate the template id'
 
   def test_render_a_report_from_an_existing_template_id(self, csdk, requests_mock):
     template_id = "0545253258577a632a99065f0572720225f5165cc43db9515e9cef0e17b40114"
@@ -154,13 +163,14 @@ class TestAddTemplate:
   def test_add_template_error_missing_args(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.add_template()
+    assert e.value.args[0] == 'CarboneSDK: add_template method: the argument template_file_name is missing'
 
   def test_add_template_error_with_a_non_existing_file(self, csdk):
-    with pytest.raises(FileNotFoundError) as e:
+    with pytest.raises(FileNotFoundError):
       csdk.add_template("ShouldThrowAnError")
 
   def test_add_template_error_with_directory(self, csdk):
-    with pytest.raises(FileNotFoundError) as e:
+    with pytest.raises(IsADirectoryError):
       csdk.add_template("../tests")
 
 
@@ -176,7 +186,8 @@ class TestGetTemplate:
 
   def test_get_template_error_missing_template_id(self, csdk):
     with pytest.raises(ValueError) as e:
-      csdk.add_template()
+      csdk.get_template()
+    assert e.value.args[0] == 'Carbone SDK get_template error: argument is missing: template_id'
 
 class TestDeleteTemplate:
   def test_delete_template(self, csdk, requests_mock):
@@ -196,6 +207,7 @@ class TestDeleteTemplate:
   def test_delete_template_error_missing_template_id(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.delete_template()
+    assert e.value.args[0] == 'Carbone SDK delete_template error: argument is missing: template_id'
 
 class TestRenderReport:
   def test_render_report(self, csdk, requests_mock):
@@ -216,10 +228,12 @@ class TestRenderReport:
   def test_render_report_error_missing_template_id(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.render_report()
+    assert e.value.args[0] == 'Carbone SDK render_report error: argument is missing: template_id'
 
   def test_render_report_error_missing_json_data(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.render_report("template_id")
+    assert e.value.args[0] == 'Carbone SDK render_report error: argument is missing: json_data'
 
 class TestGetReport:
   def test_get_report(self, csdk, requests_mock):
@@ -238,6 +252,7 @@ class TestGetReport:
   def test_get_report_error_missing_render_id(self, csdk):
     with pytest.raises(ValueError) as e:
       csdk.get_report()
+    assert e.value.args[0] == 'Carbone SDK get_report error: argument is missing: render_id'
 
 class TestGenerateTemplateID:
   def test_generate_template_id_odt_1(self, csdk):
@@ -264,6 +279,11 @@ class TestGenerateTemplateID:
     filename_html = os.path.join(os.path.dirname(__file__), 'template.test.html')
     res = csdk.generate_template_id(filename_html, "This is a long payload with different characters 1 *5 &*9 %$ 3%&@9 @(( 3992288282 29299 9299929")
     assert res == "70799b421cc9cf75d9112273a8e054c141d484eb8d5988bd006fac83e3990707"
+
+  def test_generate_template_id_error(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.generate_template_id()
+    assert e.value.args[0] == 'Carbone SDK generate_template_id error: argument is missing: template_file_name'
 
 class TestGetReportName:
   def test_get_report_name_from_header(self, csdk):
