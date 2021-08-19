@@ -1,3 +1,7 @@
+### v1.0.4
+  - Update to Carbone version 3
+  - Add examples on the documentation
+
 ### v1.0.3
   - Fix #2 - render function: check if the json argument is empty
 
