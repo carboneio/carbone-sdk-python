@@ -34,7 +34,19 @@ fd.close()
 
 ## Python SDK API
 
+### Functions overview
+
+- [CarboneSDK Constructor](#carbonesdk-constructor)
+- [Render function](#render)
+- [Add a template](#addtemplate)
+- [Delete a template](#deletetemplate)
+- [Get a template](#gettemplate)
+- [Generate template ID](#generatetemplateid)
+- [Set access token](#setaccesstoken)
+- [Set API version](#setapiversion)
+
 ### CarboneSDK Constructor
+**Definition**
 ```python
 import carbone_sdk
 
@@ -53,7 +65,9 @@ Check if it is set by running:
 ```bash
 $ printenv | grep "CARBONE_TOKEN"
 ```
+---
 ### Render
+**Definition**
 ```python
 def render(self, file_or_template_id = None, json_data = None, payload = "")
 ```
@@ -93,8 +107,9 @@ fd = open(unique_report_name, "wb")
 fd.write(report_bytes)
 fd.close()
 ```
-
+---
 ### add_template
+**Definition**
 ```python
 def add_template(self, template_file_name = None, payload = "")
 ```
@@ -113,11 +128,12 @@ try:
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
+---
 ### get_template
+**Definition**
 ```python
 def get_template(self, template_id = None)
 ```
-
 Pass a `template ID` to the function and it returns the template as `bytes`. The template ID must exist otherwise an error is returned by the server.
 
 ```python
@@ -133,7 +149,11 @@ try:
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
+---
 ### delete_template
+
+**Definition**
+
 ```python
 def delete_template(self, template_id = None)
 ```
@@ -149,24 +169,66 @@ try:
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
+---
 ### generate_template_id
+**Definition**
 ```python
 def generate_template_id(self, template_file_name = None, payload = "")
 ```
 The Template ID is predictable and idempotent, pass the template path and it will return the `template_id`.
 You can get a different template ID thanks to the optional `payload`.
 
+**Example**
+```python
+import carbone_sdk
 
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  resp = csdk.generate_template_id("./tests/template.test.odt")
+  print(resp) ## Template ID
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
+
+---
 ### set_access_token
+**Definition**
 ```python
 def set_access_token(self, api_token = None)
 ```
 It sets the Carbone access token.
 
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  csdk.set_access_token("NEW_CARBONE_RENDER_API_ACCESS_TOKEN")
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
+
+---
 ### set_api_version
+**Definition**
 ```python
 def set_api_version(self, api_version = None)
 ```
 It sets the the Carbone version requested. By default, it is calling the version `2` of Carbone.
 
 *Note:* You can only set a major version of carbone.
+
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  csdk.set_api_version("3")
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
