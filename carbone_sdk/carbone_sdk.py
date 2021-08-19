@@ -15,7 +15,7 @@ class CarboneSDK:
     self._api_timeout = 10
     self._api_headers = {
       "Authorization": "Bearer " + api_token,
-      "carbone-version": "2"
+      "carbone-version": "3"
     }
 
   def add_template(self, template_file_name = None, payload = ""):

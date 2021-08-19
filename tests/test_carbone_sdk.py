@@ -15,7 +15,7 @@ def csdk():
 class TestInitSDK:
   def test_sdk_default_values(self, csdk):
     assert csdk._api_headers["Authorization"] == "Bearer Token"
-    assert csdk._api_headers["carbone-version"] == "2"
+    assert csdk._api_headers["carbone-version"] == "3"
     assert csdk._api_url == "https://render.carbone.io"
 
   def test_init_sdk_error_missing_token(self):
@@ -40,12 +40,12 @@ class TestInitSDK:
     assert e.value.args[0] == 'Carbone SDK set_access_token error: argument is missing: api_token'
 
   def test_set_api_version_int(self, csdk):
-    new_version = 3
+    new_version = 2
     csdk.set_api_version(new_version)
     assert csdk._api_headers["carbone-version"] == str(new_version)
 
   def test_set_api_version_string(self, csdk):
-    new_version = "4"
+    new_version = "2"
     csdk.set_api_version(new_version)
     assert csdk._api_headers["carbone-version"] == new_version
 
