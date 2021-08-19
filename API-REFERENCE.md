@@ -38,12 +38,12 @@ fd.close()
 
 - [CarboneSDK Constructor](#carbonesdk-constructor)
 - [Render function](#render)
-- [Add a template](#addtemplate)
-- [Delete a template](#deletetemplate)
-- [Get a template](#gettemplate)
-- [Generate template ID](#generatetemplateid)
-- [Set access token](#setaccesstoken)
-- [Set API version](#setapiversion)
+- [Add a template](#add_template)
+- [Delete a template](#delete_template)
+- [Get a template](#get_template)
+- [Generate template ID](#generate_template_id)
+- [Set access token](#set_access_token)
+- [Set API version](#set_api_version)
 
 ### CarboneSDK Constructor
 **Definition**
