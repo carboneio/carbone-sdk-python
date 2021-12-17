@@ -1,4 +1,4 @@
-name: Release Prod Package
+name: Release Test Package
 
 on: workflow_dispatch
 
@@ -15,9 +15,9 @@ jobs:
 
       - run: pip3 install --user --upgrade setuptools wheel twine
       - run: python3 setup.py sdist
-      - run: python3 -m twine upload dist/*
+      - run: python3 -m twine upload --repository testpypi dist/*
         env:
-          TWINE_USERNAME: ${{ secrets.PYP_PROD_USERNAME }}
-          TWINE_PASSWORD: ${{ secrets.PYP_PROD_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.PYP_TEST_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYP_TEST_PASSWORD }}
 
 
