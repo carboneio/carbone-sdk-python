@@ -2,6 +2,7 @@ import requests
 import json
 import hashlib
 import os
+import mimetypes
 
 class CarboneSDK:
   'Carbone SDK class used to call Carbone Render easily'
@@ -18,13 +19,12 @@ class CarboneSDK:
       "carbone-version": "3"
     }
 
-  def add_template(self, template_file_name = None, payload = ""):
+  def add_template(self, template_file_name = None, salt = ""):
     if template_file_name is None:
       raise ValueError('CarboneSDK: add_template method: the argument template_file_name is missing')
-    file_data = open(template_file_name, "rb")
     multipart_form_data = {
-      "template": ("template.odt", file_data),
-      "payload": (None, payload)
+      "payload": (None, salt),
+      "template": (os.path.basename(template_file_name), open(template_file_name, "rb"), mimetypes.guess_type(template_file_name, strict=True))
     }
     return requests.post(self._api_url + '/template', files=multipart_form_data, headers=self._api_headers, timeout=self._api_timeout).json()
 

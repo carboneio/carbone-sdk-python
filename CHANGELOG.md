@@ -1,3 +1,6 @@
+### v1.0.5
+  - Fix "add_template": Add the template mime-type to the form-data
+
 ### v1.0.4
   - Update to Carbone version 3
   - Add examples on the documentation
