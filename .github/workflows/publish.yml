@@ -10,6 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup Python using cache (faster)
+        uses: actions/setup-python@v2
+
       - run: pip3 install --user --upgrade setuptools wheel twine
       - run: python3 setup.py sdist
       - run: python3 -m twine upload --repository testpypi dist/*
+        env:
+          TWINE_USERNAME: ${{ secrets.PYP_TEST_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYP_TEST_PASSWORD }}
+
+
+# ENV \
+#   TWINE_REPOSITORY_URL=https://nexus.your.domain/repository/pypi-hosted/ \
+#   TWINE_USERNAME=nexususername \
+#   TWINE_PASSWORD=nexuspassword
