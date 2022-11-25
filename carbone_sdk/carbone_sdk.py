@@ -13,10 +13,10 @@ class CarboneSDK:
     if api_token is None:
       raise ValueError('CarboneSDK: "API access token" is missing')
     self._api_url = "https://render.carbone.io"
-    self._api_timeout = 10
+    self._api_timeout = 60
     self._api_headers = {
       "Authorization": "Bearer " + api_token,
-      "carbone-version": "3"
+      "carbone-version": "4"
     }
 
   def add_template(self, template_file_name = None, salt = ""):
