@@ -10,7 +10,7 @@ $ pip install carbone-sdk
 
 ## Quickstart with the Python SDK
 
-Try the following code to render a report in 10 seconds. Just replace your API key, the template you want to render, and the data object.
+Try the following code to render a report in 10 seconds. Just replace your API key, the template you want to render, and the data object. Get your API key on your Carbone account: https://account.carbone.io/.
 
 ```python
 import carbone_sdk
