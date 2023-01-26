@@ -1,6 +1,6 @@
-# Carbone Render Python SDK
+# Carbone API Python SDK
 
-The Carbone Python SDK provides a simple interface to communicate with Carbone Render easily.
+The Carbone Python SDK provides a simple interface to communicate with Carbone Cloud API.
 
 ## Install the Python SDK
 
@@ -58,6 +58,7 @@ csdk = carbone_sdk.CarboneSDK()
 ```
 Constructor to create a new instance of CarboneSDK.
 The access token can be pass as an argument or by the environment variable "CARBONE_TOKEN".
+Get your API key on your Carbone account: https://account.carbone.io/.
 To set a new environment variable, use the command:
 ```bash
 $ export CARBONE_TOKEN=your-secret-token

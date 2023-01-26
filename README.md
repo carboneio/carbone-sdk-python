@@ -20,6 +20,8 @@ pip install carbone-sdk
 ## Usage
 
 You can copy and run the code bellow to try.
+Get your API token on your Carbone account: https://account.carbone.io/.
+
 ```python
 import carbone_sdk
 
