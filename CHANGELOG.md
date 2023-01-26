@@ -1,3 +1,7 @@
+### v1.0.7
+  - Fix install script  https://github.com/carboneio/carbone-sdk-python/issues/7
+  - Add function `get_status` to get the Carbone API status
+
 ### v1.0.6
   - Update to Carbone version 4
   - Set default request timeout to 60s
