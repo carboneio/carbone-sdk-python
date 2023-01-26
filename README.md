@@ -5,8 +5,9 @@
 
 Python SDK to use Carbone Render easily.
 
-> Carbone is a report generator (PDF, DOCX, XLSX, ODT, PPTX, ODS, XML, CSV...) using templates and JSON data.
-[Learn more about the Carbone ecosystem](https://carbone.io/documentation.html).
+## About Carbone
+
+Carbone is a powerful document generator (PDF, DOCX, XLSX, ODT, PPTX, ODS, XML, CSV...) using templates and JSON data. It is based on LibreOffice and can convert any document. It is also possible to convert HTML to PDF. Learn more about [supported files and features](https://carbone.io/documentation.html#supported-files-and-features-list).
 
 ### 🔖 [API REFERENCE](./API-REFERENCE.md)
 
@@ -27,11 +28,12 @@ import carbone_sdk
 # Or by the environment variable "CARBONE_TOKEN", use the command "export CARBONE_TOKEN=secret-token"
 csdk = carbone_sdk.CarboneSDK("secret-token")
 # Set API version
-csdk.set_api_version("4") 
+csdk.set_api_version("4")
 
 # The template ID, it could be an ODT, DOCX, PPTX, XLSX, ODS file, etc...
 template_id = "template"
-json_data = {
+render_options = {
+  # REQUIRED: the "data" object contains all the data to inject into the template
   "data": {
     "id": 42,
     "date": 1492012745,
@@ -52,11 +54,14 @@ json_data = {
     ],
     "total":140
   },
+  # REQUIRED: the "convertTo" attribute defines the format to generate or convert
   "convertTo":"pdf"
+  # All rendering options are available on the following API specification:
+  # https://carbone.io/api-reference.html#pdf-export-filter-options
 }
 
 # Render and return the report as bytes and a unique report name
-report_bytes, unique_report_name = csdk.render(template_id, json_data)
+report_bytes, unique_report_name = csdk.render(template_id, render_options)
 fd = open(unique_report_name, "wb")
 fd.write(report_bytes)
 fd.close()
@@ -91,17 +96,17 @@ $ pip install requests_mock
 
 To run all the test (-v for verbose output):
 ```shell
-$ pytest -v tests
+$ pytest -s -v tests
 ```
 
 To run a groupe of tests:
 ```shell
-$ pytest -v ./tests/test_carbone_sdk.py::TestRender
+$ pytest -s -v ./tests/test_carbone_sdk.py::TestRender
 ```
 
 To run a single test:
 ```shell
-$ pytest -v ./tests/test_carbone_sdk.py::TestRender::test_render_a_report_error_file_missing
+$ pytest -s -v ./tests/test_carbone_sdk.py::TestRender::test_render_a_report_error_file_missing
 ```
 
 To run a single test with all the DEBUG:

@@ -1,14 +1,14 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="carbone-sdk",
-    version="1.0.6",
+    version="1.0.7",
     author="CarboneIO",
     author_email="support@carbone.io",
-    description="Carbone Render Python SDK to generate reports easily (PDF, docx, xlsx, ods, odt, ...) from a JSON",
+    description="Carbone API Python SDK to generate documents (PDF, docx, xlsx, ods, odt, ...) from a JSON and a template.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/carboneio/carbone-sdk-python",

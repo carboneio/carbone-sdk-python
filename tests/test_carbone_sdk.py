@@ -15,8 +15,8 @@ def csdk():
 class TestInitSDK:
   def test_sdk_default_values(self, csdk):
     assert csdk._api_headers["Authorization"] == "Bearer Token"
-    assert csdk._api_headers["carbone-version"] == "3"
-    assert csdk._api_url == "https://render.carbone.io"
+    assert csdk._api_headers["carbone-version"] == "4"
+    assert csdk._api_url == "https://api.carbone.io"
 
   def test_init_sdk_error_missing_token(self):
     with pytest.raises(Exception) as e:
@@ -314,3 +314,20 @@ class TestGetReportName:
     }
     report_name = csdk.get_report_name_from_header(headers)
     assert report_name == None
+
+class TestGetStatus:
+  def test_get_status(self, csdk, requests_mock):
+    expected_response = {
+      "success": True,
+      "code": 200,
+      "message": "OK",
+      "version": "4.6.7"
+    }
+    # mock render report
+    requests_mock.get(csdk._api_url + "/status", json=expected_response)
+    # Call the function
+    resp = csdk.get_status()
+    assert resp["success"] == expected_response["success"]
+    assert resp["code"] == expected_response["code"]
+    assert resp["message"] == expected_response["message"]
+    assert resp["version"] == expected_response["version"]

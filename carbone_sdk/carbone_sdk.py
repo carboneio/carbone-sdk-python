@@ -12,7 +12,7 @@ class CarboneSDK:
       api_token = os.environ.get('CARBONE_TOKEN')
     if api_token is None:
       raise ValueError('CarboneSDK: "API access token" is missing')
-    self._api_url = "https://render.carbone.io"
+    self._api_url = "https://api.carbone.io"
     self._api_timeout = 60
     self._api_headers = {
       "Authorization": "Bearer " + api_token,
@@ -123,3 +123,6 @@ class CarboneSDK:
     if (report_name[0] == '"' and report_name[len(report_name) -1] == '"'):
       report_name = report_name[1:len(report_name)-1]
     return report_name
+
+  def get_status(self):
+    return requests.get(self._api_url + "/status", headers=self._api_headers, timeout=self._api_timeout).json()
