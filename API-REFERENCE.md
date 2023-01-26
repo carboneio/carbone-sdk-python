@@ -44,6 +44,7 @@ fd.close()
 - [Generate template ID](#generate_template_id)
 - [Set access token](#set_access_token)
 - [Set API version](#set_api_version)
+- [Get API status](#get_status)
 
 ### CarboneSDK Constructor
 **Definition**
@@ -217,7 +218,7 @@ except Exception as err:
 ```python
 def set_api_version(self, api_version = None)
 ```
-It sets the the Carbone version requested. By default, it is calling the version `2` of Carbone.
+It sets the the Carbone version requested. By default, it is calling the version `4` of Carbone.
 
 *Note:* You can only set a major version of carbone.
 
@@ -228,7 +229,32 @@ import carbone_sdk
 csdk = carbone_sdk.CarboneSDK("your_access_token")
 
 try:
-  csdk.set_api_version("3")
+  csdk.set_api_version("4")
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
+
+### get_status
+
+**Definition**
+
+```python
+def get_status()
+```
+
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+try:
+  resp = csdk.getStatus()
+  # resp["success"] => True / False
+  # resp["code"] => 200 / or any HTTP code
+  # resp["message"] => "OK" / or an error message
+  # resp["version"] => "4.6.7" / Version of Carbone running
+except Exception as err:
+  print("Something went wrong: {0}".format(err))
+```
+
