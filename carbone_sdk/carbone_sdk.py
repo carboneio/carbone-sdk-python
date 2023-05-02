@@ -77,6 +77,14 @@ class CarboneSDK:
     else:
       raise ValueError('Carbone SDK set_api_version error: an argument is invalid: api_version is not a number nor a string')
 
+  def set_api_url(self, api_url = None):
+    if api_url is None:
+      raise ValueError('Carbone SDK set_api_url error: argument is missing: api_url')
+    if isinstance(api_url, str):
+      self._api_url = api_url
+    else:
+      raise ValueError('Carbone SDK set_api_url error: an argument is invalid: api_url is not a string')
+
   def render(self, file_or_template_id = None, json_data = None, payload = ""):
     if file_or_template_id is None:
       raise ValueError('Carbone SDK render error: argument is missing: file_or_template_id')

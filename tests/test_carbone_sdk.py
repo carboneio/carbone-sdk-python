@@ -54,6 +54,16 @@ class TestInitSDK:
       csdk.set_api_version()
     assert e.value.args[0] == 'Carbone SDK set_api_version error: argument is missing: api_version'
 
+  def test_set_api_url_error_missing_url(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.set_api_url()
+    assert e.value.args[0] == 'Carbone SDK set_api_url error: argument is missing: api_url'
+
+  def test_set_api_url(self, csdk):
+    new_url = "http://localhost:3000"
+    csdk.set_api_url(new_url)
+    assert csdk._api_url == "http://localhost:3000"
+
 class TestRender:
   def test_render_a_report_error_file_missing(self, csdk):
     with pytest.raises(ValueError) as e:

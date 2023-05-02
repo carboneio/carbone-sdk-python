@@ -1,3 +1,6 @@
+### v1.0.8
+  - Add function `set_api_url` to set the Carbone API URL
+
 ### v1.0.7
   - Fix install script  https://github.com/carboneio/carbone-sdk-python/issues/7
   - Add function `get_status` to get the Carbone API status

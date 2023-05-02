@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="carbone-sdk",
-    version="1.0.7",
+    version="1.0.8",
     author="CarboneIO",
     author_email="support@carbone.io",
     description="Carbone API Python SDK to generate documents (PDF, docx, xlsx, ods, odt, ...) from a JSON and a template.",

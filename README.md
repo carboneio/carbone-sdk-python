@@ -29,8 +29,10 @@ import carbone_sdk
 # The access token can be passed as an argument to the constructor CarboneSDK
 # Or by the environment variable "CARBONE_TOKEN", use the command "export CARBONE_TOKEN=secret-token"
 csdk = carbone_sdk.CarboneSDK("secret-token")
-# Set API version
+# Set API version (default : 4)
 csdk.set_api_version("4")
+# Set API URL for Carbone On-Premise for example (default: "https://api.carbone.io")
+csdk.set_api_url("https://api.carbone.io")
 
 # The template ID, it could be an ODT, DOCX, PPTX, XLSX, ODS file, etc...
 template_id = "template"
