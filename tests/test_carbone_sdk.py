@@ -15,7 +15,8 @@ def csdk():
 class TestInitSDK:
   def test_sdk_default_values(self, csdk):
     assert csdk._api_headers["Authorization"] == "Bearer Token"
-    assert csdk._api_headers["carbone-version"] == "4"
+    assert csdk._api_headers["carbone-version"] == "5"
+    assert csdk._api_timeout == 60
     assert csdk._api_url == "https://api.carbone.io"
 
   def test_init_sdk_error_missing_token(self):
@@ -38,6 +39,23 @@ class TestInitSDK:
     with pytest.raises(ValueError) as e:
       csdk.set_access_token()
     assert e.value.args[0] == 'Carbone SDK set_access_token error: argument is missing: api_token'
+
+  def test_set_timeout_int(self, csdk):
+    default_timeout = csdk._api_timeout
+    new_timeout = 85000
+    csdk.set_timeout(new_timeout)
+    assert csdk._api_timeout == new_timeout
+    csdk.set_timeout(default_timeout)
+
+  def test_set_timeout_string(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.set_timeout("123123144")
+    assert e.value.args[0] == 'Carbone SDK set_timeout error: argument is not a number'
+  
+  def test_set_timeout_missing(self, csdk):
+    with pytest.raises(ValueError) as e:
+      csdk.set_timeout()
+    assert e.value.args[0] == 'Carbone SDK set_timeout error: argument is missing: api_timeout'
 
   def test_set_api_version_int(self, csdk):
     new_version = 2

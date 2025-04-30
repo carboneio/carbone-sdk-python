@@ -1,3 +1,6 @@
+### v1.1.1
+  - Added function `set_timeout`: Configures the HTTP client timeout for requests made to the Carbone server.
+
 ### v1.1.0
   - Fixed: Added "requests" as required install.
   - Update to Carbone version 5

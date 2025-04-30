@@ -77,6 +77,13 @@ class CarboneSDK:
     else:
       raise ValueError('Carbone SDK set_api_version error: an argument is invalid: api_version is not a number nor a string')
 
+  def set_timeout(self, api_timeout = None):
+    if api_timeout is None:
+      raise ValueError('Carbone SDK set_timeout error: argument is missing: api_timeout')
+    elif not isinstance(api_timeout, int):
+      raise ValueError('Carbone SDK set_timeout error: argument is not a number')
+    self._api_timeout = api_timeout
+
   def set_api_url(self, api_url = None):
     if api_url is None:
       raise ValueError('Carbone SDK set_api_url error: argument is missing: api_url')

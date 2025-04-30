@@ -235,6 +235,23 @@ except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
 
+---
+### set_timeout
+
+Configures the HTTP client timeout for requests made to the Carbone server. The default timeout value is set to 60 seconds, which matches the Carbone Cloud server's default timeout.
+
+If you are generating documents using a Carbone On-Premise server with a custom timeout configuration, you may need to adjust the timeout value accordingly. Increase the timeout value to ensure that the HTTP client waits long enough for the server to process the request.
+
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+
+csdk.set_timeout(120) # = 2 minutes
+csdk.set_timeout(300) # = 5 minutes
+```
+
+---
 ### get_status
 
 **Definition**
