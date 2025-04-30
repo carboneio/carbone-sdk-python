@@ -1,3 +1,7 @@
+### v1.1.0
+  - Fixed: Added "requests" as required install.
+  - Update to Carbone version 5
+
 ### v1.0.8
   - Add function `set_api_url` to set the Carbone API URL
 

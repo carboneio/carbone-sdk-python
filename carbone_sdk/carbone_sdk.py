@@ -5,7 +5,7 @@ import os
 import mimetypes
 
 class CarboneSDK:
-  'Carbone SDK class used to call Carbone Render easily'
+  'Carbone SDK class used to call Carbone API easily'
 
   def __init__(self, api_token = None):
     if ('CARBONE_TOKEN' in os.environ):
@@ -16,7 +16,7 @@ class CarboneSDK:
     self._api_timeout = 60
     self._api_headers = {
       "Authorization": "Bearer " + api_token,
-      "carbone-version": "4"
+      "carbone-version": "5"
     }
 
   def add_template(self, template_file_name = None, salt = ""):

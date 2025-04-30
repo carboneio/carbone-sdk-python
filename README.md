@@ -1,13 +1,19 @@
-# Carbone Render Python SDK
+# Carbone Python SDK
+
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/carboneio/carbone-sdk-python?style=for-the-badge&logo=python)](https://pypi.org/project/carbone-sdk)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=for-the-badge)](./API-REFERENCE.md)
 
-
-Python SDK to use Carbone Render easily.
+Generate Documents in Python: Seamless Integration with Carbone API.
 
 ## About Carbone
 
-Carbone is a powerful document generator (PDF, DOCX, XLSX, ODT, PPTX, ODS, XML, CSV...) using templates and JSON data. It is based on LibreOffice and can convert any document. It is also possible to convert HTML to PDF. Learn more about [supported files and features](https://carbone.io/documentation.html#supported-files-and-features-list).
+Carbone is a document generator that utilizes Templates and JSON data to create a wide range of file formats, including PDF, DOCX, XLSX, ODT, PPTX, ODS, XML, CSV, and more. With Carbone, you can produce professional, high-quality, rich reports without limitations and streamline document creation processes across all industries:
+- **For Organizations**: Effortlessly generate contracts, agreements, invoices, receipts, financial statements, marketing materials, employment contracts, NDAs, training manuals, and compliance documents.
+- **For Governments**: Create legislation and regulations, policy documents, budget reports, permits and licenses, public records, certificates, audit reports, and health and safety regulations with ease.
+- **For Finance**: Produce budget reports, tax returns, investment portfolios, loan agreements, audit reports, insurance policies, and financial forecasts efficiently.
+- **For Health**: Generate medical records, prescriptions, medical certificates, lab reports, and health insurance claims seamlessly.
+
+Learn more about [Carbone](https://carbone.io) and [Supported files and features](https://carbone.io/documentation.html#supported-files-and-features-list).
 
 ### 🔖 [API REFERENCE](./API-REFERENCE.md)
 
@@ -64,7 +70,7 @@ render_options = {
   # https://carbone.io/api-reference.html#pdf-export-filter-options
 }
 
-# Render and return the report as bytes and a unique report name
+# Generate and return the document as bytes and a unique report name
 report_bytes, unique_report_name = csdk.render(template_id, render_options)
 fd = open(unique_report_name, "wb")
 fd.write(report_bytes)
@@ -94,8 +100,7 @@ $ make uninstall
 ### Tests - Run manually
 Install:
 ```
-$ pip install pytest
-$ pip install requests_mock
+$ pip install -r requirements.txt
 ```
 
 To run all the test (-v for verbose output):
