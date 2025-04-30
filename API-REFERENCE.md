@@ -219,7 +219,7 @@ except Exception as err:
 ```python
 def set_api_version(self, api_version = None)
 ```
-It sets the the Carbone version requested. By default, it is calling the version `4` of Carbone.
+It sets the the Carbone version requested. By default, it is calling the version `5` of Carbone.
 
 *Note:* You can only set a major version of carbone.
 
@@ -230,7 +230,7 @@ import carbone_sdk
 csdk = carbone_sdk.CarboneSDK("your_access_token")
 
 try:
-  csdk.set_api_version("4")
+  csdk.set_api_version("5")
 except Exception as err:
   print("Something went wrong: {0}".format(err))
 ```
