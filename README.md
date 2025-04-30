@@ -15,8 +15,6 @@ Carbone is a document generator that utilizes Templates and JSON data to create 
 
 Learn more about [Carbone](https://carbone.io) and [Supported files and features](https://carbone.io/documentation.html#supported-files-and-features-list).
 
-### 🔖 [API REFERENCE](./API-REFERENCE.md)
-
 ## Install
 
 ```sh
@@ -79,7 +77,7 @@ fd.close()
 ```
 ## Documentation
 
-- [API REFERENCE](./API-REFERENCE.md)
+- [🔖 API REFERENCE](./API-REFERENCE.md)
 
 ## Tests
 
