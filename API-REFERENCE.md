@@ -43,8 +43,10 @@ fd.close()
 - [Get a template](#get_template)
 - [Generate template ID](#generate_template_id)
 - [Set access token](#set_access_token)
+- [Set timeout](#set_timeout)
 - [Set API version](#set_api_version)
 - [Get API status](#get_status)
+- [Webhook Rendering](#webhook-rendering)
 
 ### CarboneSDK Constructor
 **Definition**
@@ -274,5 +276,23 @@ try:
   # resp["version"] => "4.6.7" / Version of Carbone running
 except Exception as err:
   print("Something went wrong: {0}".format(err))
+```
+
+### Webhook Rendering
+
+**Example**
+```python
+import carbone_sdk
+
+csdk = carbone_sdk.CarboneSDK("your_access_token")
+csdk._api_headers['carbone-webhook-url'] = 'https://custom.webhook/''
+
+try:
+  resp = csdk.render_report(templateId, json_data)
+  # resp["success"] => True / False
+  # resp["message"] => "A render ID will be sent to your callback URL when the document is generated"
+except Exception as err:
+  print("Something went wrong")
+  print(err)
 ```
 
